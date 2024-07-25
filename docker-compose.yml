@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: ./chat-app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8747:8747"
+    environment:
+      - PORT=8747
+      - JWT_KEY=finnChat
+      - ORIGIN=http://localhost:5173
+      - MONGODB_URL=mongodb+srv://ngocnhathht:JlCVj3RAHIcWINpV@chatappdatabase.fastywa.mongodb.net/?retryWrites=true&w=majority&appName=ChatAppDatabase
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ngocnhathht
+      MONGO_INITDB_ROOT_PASSWORD: JlCVj3RAHIcWINpV
