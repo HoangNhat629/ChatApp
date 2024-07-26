@@ -28,6 +28,11 @@ const setupSocket = (server) => {
       const messageData = await Message.findById(createdMessage._id)
         .populate("sender", "id email firstName lastName image color")
         .populate("recipient", "id email firstName lastName image color");
+      if (messageData.messageType === "text" && messageData.content) {
+        messageData.content = messageData.decryptContent();
+      } else if (messageData.messageType === "file" && messageData.fileURL) {
+        messageData.fileURL = messageData.decryptFileURL();
+      }
       if (recipientSocketId) {
         io.to(recipientSocketId).emit("recieveMessage", messageData);
       }
@@ -55,6 +60,11 @@ const setupSocket = (server) => {
       await Channel.findByIdAndUpdate(channelId, {
         $push: { messages: createdMessage._id },
       });
+      if (messageData.messageType === "text" && messageData.content) {
+        messageData.content = messageData.decryptContent();
+      } else if (messageData.messageType === "file" && messageData.fileURL) {
+        messageData.fileURL = messageData.decryptFileURL();
+      }
       const channel = await Channel.findById(channelId).populate("members");
       const finalData = { ...messageData._doc, channelId: channel._id };
       if (channel && channel.members) {
@@ -73,7 +83,7 @@ const setupSocket = (server) => {
       console.error("Error sending channel message:", error);
     }
   };
-  
+
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
     if (userId) {

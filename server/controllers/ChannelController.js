@@ -49,7 +49,14 @@ const getChannelMessages = async (req, res) => {
     if (!channel) {
       return res.status(404).send("Channel not found");
     }
-    const messages = channel.messages;
+    const messages = channel.messages.map((message) => {
+      if (message.messageType === "text" && message.content) {
+        message.content = message.decryptContent();
+      } else if (message.messageType === "file" && message.fileURL) {
+        message.fileURL = message.decryptFileURL();
+      }
+      return message;
+    });
     return res.status(200).json({ messages });
   } catch (e) {
     return res

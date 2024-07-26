@@ -7,14 +7,21 @@ const getMessages = async (req, res) => {
     if (!user1 || !user2) {
       return res.status(400).send("User ID is required");
     }
-    const messages = await Message.find({
+    const messagesList = await Message.find({
       $or: [
         { sender: user1, recipient: user2 },
         { sender: user2, recipient: user1 },
       ],
     }).sort({ timestamps: 1 });
-
-    return res.status(200).json({ messages});
+    const decryptedMessages = messagesList.map((message) => {
+      if (message.messageType === "text") {
+        message.content = message.decryptContent();
+      } else if (message.messageType === "file") {
+        message.fileURL = message.decryptFileURL();
+      }
+      return message;
+    });
+    return res.status(200).json({ messages: decryptedMessages });
   } catch (e) {
     return res
       .status(500)
