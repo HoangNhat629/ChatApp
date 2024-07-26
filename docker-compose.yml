@@ -19,6 +19,8 @@ services:
       - JWT_KEY=finnChat
       - ORIGIN=http://localhost:5173
       - MONGODB_URL=mongodb+srv://ngocnhathht:JlCVj3RAHIcWINpV@chatappdatabase.fastywa.mongodb.net/?retryWrites=true&w=majority&appName=ChatAppDatabase
+      - ALGORITHM = aes-256-cbc
+      - SECRETKEY = vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
     depends_on:
       - mongo
 
