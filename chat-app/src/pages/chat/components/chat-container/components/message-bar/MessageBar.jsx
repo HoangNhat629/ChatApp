@@ -135,12 +135,14 @@ const MessageBar = () => {
           <GrAttachment className="text-2xl" />
         </button>
 
-        <button
-          className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all"
-          onClick={() => setIsMakeCall(true)}
-        >
-          <IoMdCall className="text-2xl" />
-        </button>
+        {selectedChatType === "contact" && (
+          <button
+            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all"
+            onClick={() => setIsMakeCall(true)}
+          >
+            <IoMdCall className="text-2xl" />
+          </button>
+        )}
         {isMakeCall && callFreature()}
         <input
           type="file"
