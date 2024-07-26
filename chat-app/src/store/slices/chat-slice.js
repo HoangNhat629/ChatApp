@@ -5,6 +5,7 @@ export const createChatSlice = (set, get) => ({
   directMessagesContacts: [],
   isUploading: false,
   isDownloading: false,
+  isMakeCall: false,
   fileUploadProgress: 0,
   fileDownloadProgress: 0,
   channels: [],
@@ -24,6 +25,7 @@ export const createChatSlice = (set, get) => ({
     const channels = get().channels;
     set({ channels: [...channels, channel] });
   },
+  setIsMakeCall: (isMakeCall) => set({ isMakeCall }),
   closeChat: () =>
     set({
       selectedChatType: undefined,

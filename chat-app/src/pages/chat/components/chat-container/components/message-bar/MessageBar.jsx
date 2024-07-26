@@ -9,7 +9,6 @@ import { apiClient } from "../../../../../../lib/api-client";
 import { UPLOAD_FILE_ROUTE } from "../../../../../../utils/constants";
 import { IoMdCall } from "react-icons/io";
 import CallVideo from "../call-video/CallVideo";
-import { IoCloseSharp } from "react-icons/io5";
 
 const MessageBar = () => {
   const emojiRef = useRef();
@@ -22,9 +21,10 @@ const MessageBar = () => {
     userInfo,
     setIsUploading,
     setFileUploadProgress,
+    setIsMakeCall,
+    isMakeCall,
   } = useAppStore();
 
-  const [makeCall, setMakeCall] = useState(false);
   const socket = useSocket();
   useEffect(() => {
     function handleClickOutside(e) {
@@ -59,7 +59,6 @@ const MessageBar = () => {
       });
     }
     setMessage("");
-    console.log(message);
   };
   const handleAttachmentClick = () => {
     if (fileInputRef.current) {
@@ -113,18 +112,9 @@ const MessageBar = () => {
     }
   };
   const callFreature = () => {
-    
     return (
       <div className="fixed z-[1000] top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col">
-        <button
-          className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300 gap-5 fixed top-0 mt-5 right-3"
-          onClick={() => {
-            setMakeCall(false);
-          }}
-        >
-          <IoCloseSharp />
-        </button>
-        <CallVideo/>
+        <CallVideo />
       </div>
     );
   };
@@ -147,11 +137,11 @@ const MessageBar = () => {
 
         <button
           className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all"
-          onClick={() => setMakeCall(true)}
+          onClick={() => setIsMakeCall(true)}
         >
           <IoMdCall className="text-2xl" />
         </button>
-        {makeCall && callFreature()}
+        {isMakeCall && callFreature()}
         <input
           type="file"
           className="hidden"
