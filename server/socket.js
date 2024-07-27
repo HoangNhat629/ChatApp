@@ -83,7 +83,20 @@ const setupSocket = (server) => {
       console.error("Error sending channel message:", error);
     }
   };
-
+  // Func handler call
+  const handleMakeCall =(data) =>{
+    const recipientSocketId = userSocketMap.get(data.to);
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("incomingCall", {  });
+    }
+  }
+  //Func handler end call
+  const handleEndCall = (data) =>{
+    const recipientSocketId = userSocketMap.get(data.to);
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("callEnded", {  });
+    }
+  }
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
     if (userId) {
@@ -94,6 +107,8 @@ const setupSocket = (server) => {
     }
     socket.on("sendMessage", sendMessage);
     socket.on("send-channel-message", sendChannelMessage);
+    socket.on("makeCall", handleMakeCall);
+    socket.on("endCall", handleEndCall);
     socket.on("disconnect", () => disconnect(socket));
   });
 };

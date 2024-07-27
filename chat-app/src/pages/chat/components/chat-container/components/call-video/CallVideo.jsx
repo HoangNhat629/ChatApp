@@ -25,7 +25,7 @@ const CallVideo = () => {
           console.error("Error accessing webcam or microphone:", err);
         }
       };
-
+      socket.emit('makeCall', { from: userInfo._id, to: selectedChatData._id });
       getMedia();
     }
 
@@ -51,6 +51,7 @@ const CallVideo = () => {
     setIsMakeCall(false);
     setVideoEnabled(false);
     setAudioEnabled(false);
+    socket.emit('endCall', { from: userInfo._id, to: selectedChatData._id });
   };
 
   return (
