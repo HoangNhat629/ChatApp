@@ -21,6 +21,8 @@ services:
       - MONGODB_URL=mongodb+srv://ngocnhathht:JlCVj3RAHIcWINpV@chatappdatabase.fastywa.mongodb.net/?retryWrites=true&w=majority&appName=ChatAppDatabase
       - ALGORITHM = aes-256-cbc
       - SECRETKEY = vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
+      - SG_KEY = finnsendmail
+      - NODE_ENV = development
     depends_on:
       - mongo
 

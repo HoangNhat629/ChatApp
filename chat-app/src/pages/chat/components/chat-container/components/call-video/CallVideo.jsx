@@ -2,13 +2,11 @@ import { useRef, useState, useEffect } from "react";
 import { IoVideocam, IoVideocamOff, IoMic, IoMicOff } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { useAppStore } from "../../../../../../store/store";
-import { useSocket } from "../../../../../../context/SocketContext";
 const CallVideo = () => {
   const videoRef = useRef(null);
   const [videoEnabled, setVideoEnabled] = useState(true);
   const [audioEnabled, setAudioEnabled] = useState(true);
-  const { selectedChatData, userInfo, isMakeCall, setIsMakeCall } = useAppStore();
-  const socket = useSocket();
+  const { isMakeCall, setIsMakeCall } = useAppStore();
   useEffect(() => {
     if (isMakeCall) {
       // Access the webcam
@@ -25,7 +23,6 @@ const CallVideo = () => {
           console.error("Error accessing webcam or microphone:", err);
         }
       };
-      socket.emit('makeCall', { from: userInfo._id, to: selectedChatData._id });
       getMedia();
     }
 
@@ -51,7 +48,6 @@ const CallVideo = () => {
     setIsMakeCall(false);
     setVideoEnabled(false);
     setAudioEnabled(false);
-    socket.emit('endCall', { from: userInfo._id, to: selectedChatData._id });
   };
 
   return (

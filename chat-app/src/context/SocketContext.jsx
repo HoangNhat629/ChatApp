@@ -43,14 +43,9 @@ export const SocketProvider = ({ children }) => {
         }
         addChannelInChannelList(message);
       };
-      const handleIncomingCall = (call) => {
-
-      };
-      const handleCallEnded = (call) => {}
       socket.current.on("recieveMessage", handleRecieveMessage);
       socket.current.on("recieve-channel-message", handleRecieveChannelMessage);
-      socket.current.on("incomingCall", handleIncomingCall);
-      socket.current.on("callEnded", handleCallEnded);
+      
       return () => {
         socket.current.disconnect();
       };
